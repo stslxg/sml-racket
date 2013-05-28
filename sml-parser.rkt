@@ -102,23 +102,19 @@
     (funmatch [(AID pat ASSIGNOP exp) (list $1 $2 $4)])
     (pat [(DATUM) $1]
          [(AID) $1]
-         [(OP pat CP) (list $2)]
-         [(pat-tuple pat CP) `(tuple ,(reverse (cons $2 $1)))]
-         [(pat-list pat LCP) (reverse (cons $2 $1))]
-         [(LOP LCP) '()])
+         [(OP pat CP) `(pat-tuple ,(list $2))]
+         [(pat-tuple pat CP) `(pat-tuple ,(reverse (cons $2 $1)))])
     (pat-tuple [(OP pat COMMA) (list $2)]
                [(pat-tuple pat COMMA) (cons $2 $1)])
-    (pat-list [(LOP) '()]
-              [(pat-list pat COMMA) (cons $2 $1)])
     (exp [(DATUM) $1]
          [(AID) $1]
          [(exp exp) `(app ,$1 ,$2)]
          [(exp SID exp) `(app ,$2 ,$1 ,$3)]
          [(exp ASSIGNOP exp) `(app ,"=" ,$1 ,$3)]
          [(OP exp CP) $2]
-         [(exp-tuple exp CP) `(tuple ,(reverse (cons $2 $1)))]
-         [(exp-list exp LCP) (reverse (cons $2 $1))]
-         [(LOP LCP) '()]
+         [(exp-tuple exp CP) `(exp-tuple ,(reverse (cons $2 $1)))]
+         [(exp-list exp LCP) `(exp-list ,(reverse (cons $2 $1)))]
+         [(LOP LCP) '(exp-list ())]
          [(exp-seq exp CP) `(seq ,(reverse (cons $2 $1)))]
          [(LET let-dec IN exp-let END) `(let ,$2 ,(reverse $4))]
          [(exp ANDALSO exp) `(and ,$1 ,$3)]
@@ -140,4 +136,4 @@
   (port-count-lines! input-port)
   (sml-parser (lambda () (sml-lexer input-port))))
 
-(display (sml-parser-test (open-input-file "test.sml" #:mode 'text)))
+(print (sml-parser-test (open-input-file "test.sml" #:mode 'text)))
