@@ -2,3 +2,4 @@
 compiled/
 *~
 yacc.log
+*.zip

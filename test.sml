@@ -41,7 +41,7 @@ fun month_range(day1, day2 ) =
     in countup(day1, day2)
     end
 
-fun remove_duplicate(l    ) = 
+(*fun remove_duplicate(l    ) = 
     if null l
     then []
     else let val tl_ans = remove_duplicate(tl l)
@@ -62,5 +62,5 @@ fun number_in_months_challenge(x, y ) =
 fun dates_in_months_challenge(x, y) =
     dates_in_months(x, remove_duplicate(y))
 
-
+*)
 

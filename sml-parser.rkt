@@ -74,7 +74,7 @@
    (tokens data delim)
    (error (lambda (tok-ok? tok-name tok-value) (print tok-name)(print tok-value)))
    (debug "yacc.log")
-   
+   (suppress)
    (precs (left SID)
           (left AID)
           (left ANDALSO)
@@ -99,18 +99,18 @@
              [(dec let-dec) (cons $1 $2)])
     (valbind [(pat ASSIGNOP exp) (list $1 $3)])
     (funbind [(funmatch) $1])
-    (funmatch [(AID pat ASSIGNOP exp) (list $1 $2 $4)])
-    (pat [(DATUM) $1]
-         [(AID) $1]
+    (funmatch [(AID pat ASSIGNOP exp) (list `(id ,$1) $2 $4)])
+    (pat [(DATUM) `(datum ,$1)]
+         [(AID) `(id ,$1)]
          [(OP pat CP) `(pat-tuple ,(list $2))]
          [(pat-tuple pat CP) `(pat-tuple ,(reverse (cons $2 $1)))])
     (pat-tuple [(OP pat COMMA) (list $2)]
                [(pat-tuple pat COMMA) (cons $2 $1)])
-    (exp [(DATUM) $1]
-         [(AID) $1]
-         [(exp exp) `(app ,$1 ,$2)]
-         [(exp SID exp) `(app ,$2 ,$1 ,$3)]
-         [(exp ASSIGNOP exp) `(app ,"=" ,$1 ,$3)]
+    (exp [(DATUM) `(datum ,$1)]
+         [(AID) `(id ,$1)]
+         [(exp exp) (prec SID) `(app ,$1 ,$2)]
+         [(exp SID exp) `(app (id ,$2) ,$1 ,$3)]
+         [(exp ASSIGNOP exp) `(app (id ,"=") ,$1 ,$3)]
          [(OP exp CP) $2]
          [(exp-tuple exp CP) `(exp-tuple ,(reverse (cons $2 $1)))]
          [(exp-list exp LCP) `(exp-list ,(reverse (cons $2 $1)))]
@@ -136,4 +136,4 @@
   (port-count-lines! input-port)
   (sml-parser (lambda () (sml-lexer input-port))))
 
-(print (sml-parser-test (open-input-file "test.sml" #:mode 'text)))
+;(print (sml-parser-test (open-input-file "test.sml" #:mode 'text)))
