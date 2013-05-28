@@ -71,7 +71,8 @@
     (prog [() '()]
           [(error prog) $2]
           [(dec SEMI-CO prog) (cons $1 $3)]
-          [(dec prog) (cons $1 $2)])
+          [(dec prog) (cons $1 $2)]
+          [(exp) $1])
     
     (dec [(VAL valbind) `(valbind ,@$2)]
          [(FUN funbind) `(funbind ,(first $2) ,(second $2) ,(third $2))]
@@ -86,7 +87,11 @@
          [(OP pat CP) (list $2)]
          [(OP pat pat-tuple) (cons $2 $3)]
          [(LOP pat pat-list) (cons $2 $3)])
-    (pat-tuple [(COMMA 
+    (pat-tuple [(COMMA pat CP) (list $2)]
+               [(COMMA pat pat-tuple) (cons $2 $3)])
+    (pat-list [(COMMA pat LCP) (list $2)]
+              [(COMMA pat pat-list) (cons $2 $3)])
+    (exp [() '()])
     )))
 
 ;;for testing

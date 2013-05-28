@@ -169,11 +169,6 @@
   </tr>
   <tr>
     <td></td> <td></td>
-    <td> &#10216;<tt>op</tt>&#10217; <i>longid</i> </td>
-    <td> value or constructor identifier </td>
-  </tr>
-  <tr>
-    <td></td> <td></td>
     <td> <i>exp</i><sub>1</sub> <i>exp</i><sub>2</sub> </td>
     <td> application </td>
   </tr>
@@ -186,27 +181,6 @@
     <td></td> <td></td>
     <td> <tt>(</tt> <i>exp</i> <tt>)</tt> </td>
     <td> parentheses </td>
-  </tr>
-  <tr>
-    <td></td> <td></td>
-    <td> <tt>(</tt> <i>exp</i><sub>1</sub> <tt>,</tt> ... <tt>,</tt>
-                    <i>exp</i><sub><i>n</i></sub> <tt>)</tt> </td>
-    <td> tuple (<i>n</i> &#8800; 1) </td>
-  </tr>
-  <tr>
-    <td></td> <td></td>
-    <td> <tt>{</tt> &#10216;<i>exprow</i>&#10217; <tt>}</tt> &nbsp;&nbsp; </td>
-    <td> record </td>
- <!--
-    <td> <tt>{</tt> <i>lab</i><sub>1</sub> <tt>=</tt> <i>exp</i><sub>1</sub> <tt>,</tt> ... <tt>,</tt>
-                    <i>lab</i><sub><i>n</i></sub> <tt>=</tt> <i>exp</i><sub><i>n</i></sub> <tt>}</tt> &nbsp;&nbsp; </td>
-    <td> record (<i>n</i> &ge; 0) </td>
--->
-  </tr>
-  <tr>
-    <td></td> <td></td>
-    <td> <tt>#</tt> <i>lab</i> </td>
-    <td> record selector </td>
   </tr>
   <tr>
     <td></td> <td></td>
@@ -229,21 +203,6 @@
   </tr>
   <tr>
     <td></td> <td></td>
-    <td> <i>exp</i> <tt>:</tt> <i>typ</i> </td>
-    <td> type annotation </td>
-  </tr>
-  <tr>
-    <td></td> <td></td>
-    <td> <tt>raise</tt> <i>exp</i> </td>
-    <td> exception raising </td>
-  </tr>
-  <tr>
-    <td></td> <td></td>
-    <td> <i>exp</i> <tt>handle</tt> <i>match</i> </td>
-    <td> exception handling </td>
-  </tr>
-  <tr>
-    <td></td> <td></td>
     <td> <i>exp</i><sub>1</sub> <tt>andalso</tt> <i>exp</i><sub>2</sub> </td>
     <td> conjunction </td>
   </tr>
@@ -259,53 +218,8 @@
          <tt>else</tt> <i>exp</i><sub>3</sub> </td>
     <td> conditional </td>
   </tr>
-  <tr>
-    <td></td> <td></td>
-    <td> <tt>while</tt> <i>exp</i><sub>1</sub>
-         <tt>do</tt> <i>exp</i><sub>2</sub> </td>
-    <td> iteration </td>
-  </tr>
-  <tr>
-    <td></td> <td></td>
-    <td> <tt>case</tt> <i>exp</i> <tt>of</tt> <i>match</i> </td>
-    <td> case analysis </td>
-  </tr>
-  <tr>
-    <td></td> <td></td>
-    <td> <tt>fn</tt> <i>match</i> </td>
-    <td> function </td>
-  </tr>
 
-  <tr><td></td></tr>
-  <tr>
-    <td> <i>exprow</i> &nbsp;&nbsp;</td>
-    <td>::=</td>
-<!--
-  </tr>
-  <tr>
-    <td></td> <td></td>
--->
-    <td> <i>lab</i> <tt>=</tt> <i>exp</i> &#10216;<tt>,</tt> <i>exprow</i>&#10217; </td>
-    <td> expression row </td>
-  </tr>
-
-  <tr><td></td></tr>
-  <tr>
-    <td> <i>match</i> &nbsp;&nbsp;</td>
-    <td>::=</td>
-<!--
-  </tr>
-  <tr>
-    <td></td> <td></td>
--->
-    <td> <i>pat</i> <tt>=&gt;</tt> <i>exp</i> &#10216;<tt>|</tt> <i>match</i>&#10217; </td>
-    <td> match </td>
-<!--
-    <td> <i>pat</i><sub>1</sub> <tt>=></tt> <i>exp</i><sub>1</sub> <tt>|</tt> ... <tt>|</tt>
-         <i>pat</i><sub><i>n</i></sub> <tt>=></tt> <i>exp</i><sub><i>n</i></sub> </td>
-    <td> match (<i>n</i> &ge; 1) </td>
--->
-  </tr>
+  
 </tbody></table>
 
 
@@ -442,13 +356,6 @@
     <td> <i>dec</i> </td>
     <td> core declaration </td>
   </tr>
-<!--
-  <tr>
-    <td></td> <td></td>
-    <td> <i>exp</i> <tt>;</tt> </td>
-    <td> expression </td>
-  </tr>
--->
   <tr>
     <td></td> <td></td>
     <td> </td>
@@ -459,10 +366,13 @@
     <td> <i>prog</i><sub>1</sub> &#10216;<tt>;</tt>&#10217; <i>prog</i><sub>2</sub> </td>
     <td> sequence </td>
   </tr>
+  <tr>
+    <td></td> <td></td>
+    <td> <i>exp</i></td>
+    <td> expression </td>
+  </tr>
 
 </tbody></table>
-
-<p><sub>Note: Omitted <i>exp</i><tt>;</tt> derived form for interactive toplevel.</sub></p>
 
 
 <h2><a name="notation">Notation</a></h2>
@@ -491,6 +401,11 @@
       <a href="http://www.mpi-sws.org/%7Erossberg/">Andreas Rossberg</a>,
       <a href="mailto:rossberg@mpi-sws.org">rossberg@mpi-sws.org</a>. <br>
       Last modified: 2013/04/22
+    </td>
+    <td>
+      Modified by Xuangui Huang,
+      <a href="mailto:stslxg@gmail.com">stslxg@gmail.com</a>. <br>
+      Last modified: 2013/05/28
     </td>
 
     <td align="right">
