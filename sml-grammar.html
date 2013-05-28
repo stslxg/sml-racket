@@ -35,11 +35,6 @@
   </tr>
   <tr>
     <td></td> <td></td>
-    <td> <i>word</i> </td>
-    <td> word </td>
-  </tr>
-  <tr>
-    <td></td> <td></td>
     <td> <i>float</i> </td>
     <td> floating point </td>
   </tr>
@@ -64,28 +59,6 @@
 -->
     <td> &#10216;<tt>~</tt>&#10217;<i>num</i> </td>
     <td> decimal </td>
-  </tr>
-  <tr>
-    <td></td> <td></td>
-    <td> &#10216;<tt>~</tt>&#10217;<tt>0x</tt><i>hex</i> </td>
-    <td> hexadecimal </td>
-  </tr>
-
-  <tr>
-    <td> <i>word</i> </td>
-    <td>::=</td>
-<!--
-  </tr>
-  <tr>
-    <td></td> <td></td>
--->
-    <td> <tt>0w</tt><i>num</i> </td>
-    <td> decimal </td>
-  </tr>
-  <tr>
-    <td></td> <td></td>
-    <td> <tt>0wx</tt><i>hex</i> </td>
-    <td> hexadecimal </td>
   </tr>
 
   <tr>
@@ -141,17 +114,6 @@
     <td> number </td>
   </tr>
 
-  <tr>
-    <td> <i>hex</i> </td>
-    <td>::=</td>
-<!--
-  </tr>
-  <tr>
-    <td></td> <td></td>
--->
-    <td> &#10216;<i>digit</i> | <i>letter</i>&#10217;<sup>+</sup> </td>
-    <td> hexadecimal number (letters may only be in the range A-F) </td>
-  </tr>
 
   <tr>
     <td> <i>ascii</i> </td>
@@ -188,51 +150,6 @@
     <td> symbolic (not allowed for type variables or module language identifiers) </td>
   </tr>
 
-  <tr>
-    <td> <i>var</i> </td>
-    <td>::=</td>
-<!--
-  </tr>
-  <tr>
-    <td></td> <td></td>
--->
-    <td> <tt>'</tt>&#10216;<i>id</i>&#10217; </td>
-    <td> unconstrained </td>
-  </tr>
-  <tr>
-    <td></td> <td></td>
-    <td> <tt>''</tt>&#10216;<i>id</i>&#10217; </td>
-    <td> equality </td>
-  </tr>
-
-  <tr>
-    <td> <i>longid</i> &nbsp;&nbsp; </td>
-    <td>::=</td>
-<!--
-  </tr>
-  <tr>
-    <td></td> <td></td>
--->
-    <td> <i>id</i><sub>1</sub><tt>.</tt>···<tt>.</tt><i>id</i><sub><i>n</i></sub> </td>
-    <td> qualified (<i>n</i> &#8805; 1) </td>
-  </tr>
-
-  <tr>
-    <td> <i>lab</i> </td>
-    <td>::=</td>
-<!--
-  </tr>
-  <tr>
-    <td></td> <td></td>
--->
-    <td> <i>id</i> </td>
-    <td> identifier </td>
-  </tr>
-  <tr>
-    <td></td> <td></td>
-    <td> <i>num</i> </td>
-    <td> number (may not start with <tt>0</tt>) </td>
-  </tr>
 </tbody></table>
 
 
@@ -495,66 +412,6 @@
 <p><sub>Note: Omitted layered patterns on record labels.</sub></p>
 -->
 
-<h3><a name="typ">Types</a></h3>
-
-<table>
-  <tbody><tr>
-    <td> <i>typ</i> &nbsp;&nbsp;</td>
-    <td>::=&nbsp;&nbsp;</td>
-<!--
-  </tr>
-  <tr>
-    <td></td> <td></td>
--->
-    <td> <i>var</i> </td>
-    <td> variable </td>
-  </tr>
-  <tr>
-    <td></td> <td></td>
-    <td> &#10216;<i>typ</i>&#10217;<sup>(,)</sup> <i>longid</i> </td>
-    <td> constructor </td>
-  </tr>
-  <tr>
-    <td></td> <td></td>
-    <td> <tt>(</tt> <i>typ</i> <tt>)</tt> </td>
-    <td> parentheses </td>
-  </tr>
-  <tr>
-    <td></td> <td></td>
-    <td> <i>typ</i><sub>1</sub> <tt>-&gt;</tt> <i>typ</i><sub>2</sub> </td>
-    <td> function </td>
-  </tr>
-  <tr>
-    <td></td> <td></td>
-    <td> <i>typ</i><sub>1</sub> <tt>*</tt> ... <tt>*</tt>
-         <i>typ</i><sub><i>n</i></sub> </td>
-    <td> tuple (<i>n</i> &#8805; 2) </td>
-  </tr>
-  <tr>
-    <td></td> <td></td>
-    <td> <tt>{</tt> &#10216;<i>typrow</i>&#10217; <tt>}</tt> &nbsp;&nbsp; </td>
-    <td> record </td>
-<!--
-    <td> <tt>{</tt> <i>lab</i><sub>1</sub> <tt>:</tt> <i>typ</i><sub>1</sub> <tt>,</tt> ... <tt>,</tt>
-                    <i>lab</i><sub><i>n</i></sub> <tt>:</tt> <i>typ</i><sub><i>n</i></sub> <tt>}</tt> &nbsp;&nbsp;</td>
-    <td> record (<i>n</i> &ge; 0) </td>
--->
-  </tr>
-
-  <tr><td></td></tr>
-  <tr>
-    <td> <i>typrow</i> &nbsp;&nbsp;</td>
-    <td>::=</td>
-<!--
-  </tr>
-  <tr>
-    <td></td> <td></td>
--->
-    <td> <i>lab</i> <tt>:</tt> <i>typ</i> &#10216;<tt>,</tt> <i>typrow</i>&#10217; &nbsp;&nbsp;</td>
-    <td> type row </td>
-  </tr>
-</tbody></table>
-
 
 <h3><a name="dec">Declarations</a></h3>
 
@@ -567,44 +424,15 @@
   <tr>
     <td></td> <td></td>
 -->
-    <td> <tt>val</tt> &#10216;<i>var</i>&#10217;<sup>(,)</sup> <i>valbind</i> </td>
+    <td> <tt>val</tt> <i>valbind</i> </td>
     <td> value </td>
   </tr>
   <tr>
     <td></td> <td></td>
-    <td> <tt>fun</tt> &#10216;<i>var</i>&#10217;<sup>(,)</sup> <i>funbind</i> </td>
+    <td> <tt>fun</tt> <i>funbind</i> </td>
     <td> function </td>
   </tr>
-  <tr>
-    <td></td> <td></td>
-    <td> <tt>type</tt> <i>typbind</i> </td>
-    <td> type </td>
-  </tr>
-  <tr>
-    <td></td> <td></td>
-    <td> <tt>datatype</tt> <i>datbind</i> &#10216;<tt>withtype</tt> <i>typbind</i>&#10217; </td>
-    <td> data type </td>
-  </tr>
-  <tr>
-    <td></td> <td></td>
-    <td> <tt>datatype</tt> <i>id</i> <tt>=</tt> <tt>datatype</tt> <i>longid</i> </td>
-    <td> data type replication </td>
-  </tr>
-  <tr>
-    <td></td> <td></td>
-    <td> <tt>abstype</tt> <i>datbind</i> &#10216;<tt>withtype</tt> <i>typbind</i>&#10217; <tt>with</tt> <i>dec</i> <tt>end</tt> </td>
-    <td> abstract type </td>
-  </tr>
-  <tr>
-    <td></td> <td></td>
-    <td> <tt>exception</tt> <i>exnbind</i> </td>
-    <td> exception </td>
-  </tr>
-  <tr>
-    <td></td> <td></td>
-    <td> <tt>structure</tt> <i>strbind</i> </td>
-    <td> structure (not allowed inside expressions) </td>
-  </tr>
+ 
   <tr>
     <td></td> <td></td>
     <td> </td>
@@ -615,32 +443,6 @@
     <td> <i>dec</i><sub>1</sub> &#10216;<tt>;</tt>&#10217; <i>dec</i><sub>2</sub> </td>
     <td> sequence </td>
   </tr>
-  <tr>
-    <td></td> <td></td>
-    <td> <tt>local</tt> <i>dec</i><sub>1</sub> <tt>in</tt> <i>dec</i><sub>2</sub> <tt>end</tt> </td>
-    <td> local </td>
-  </tr>
-  <tr>
-    <td></td> <td></td>
-    <td> <tt>open</tt> <i>longid</i><sub>1</sub> ... <i>longid</i><sub><i>n</i></sub> </td>
-    <td> inclusion (<i>n</i> &#8805; 1) </td>
-  </tr>
-  <tr>
-    <td></td> <td></td>
-    <td> <tt>nonfix</tt> <i>id</i><sub>1</sub> ... <i>id</i><sub><i>n</i></sub> </td>
-    <td> nonfix (<i>n</i> &#8805; 1) </td>
-  </tr>
-  <tr>
-    <td></td> <td></td>
-    <td> <tt>infix</tt> &#10216;<i>digit</i>&#10217; <i>id</i><sub>1</sub> ... <i>id</i><sub><i>n</i></sub> </td>
-    <td> left-associative infix (<i>n</i> &#8805; 1) </td>
-  </tr>
-  <tr>
-    <td></td> <td></td>
-    <td> <tt>infixr</tt> &#10216;<i>digit</i>&#10217; <i>id</i><sub>1</sub> ... <i>id</i><sub><i>n</i></sub> </td>
-    <td> right-associative infix (<i>n</i> &#8805; 1) </td>
-  </tr>
-
   <tr><td></td></tr>
   <tr>
     <td> <i>valbind</i> </td>
@@ -650,13 +452,8 @@
   <tr>
     <td></td> <td></td>
 -->
-    <td> <i>pat</i> <tt>=</tt> <i>exp</i> &#10216;<tt>and</tt> <i>valbind</i>&#10217; </td>
+    <td> <i>pat</i> <tt>=</tt> <i>exp</i>
     <td> destructuring </td>
-  </tr>
-  <tr>
-    <td></td> <td></td>
-    <td> <tt>rec</tt> <i>valbind</i> </td>
-    <td> recursive </td>
   </tr>
 
   <tr><td></td></tr>
@@ -668,7 +465,7 @@
   <tr>
     <td></td> <td></td>
 -->
-    <td> <i>funmatch</i> &#10216;<tt>and</tt> <i>funbind</i>&#10217; </td>
+    <td> <i>funmatch</i>
     <td> clausal function </td>
   </tr>
 
@@ -681,77 +478,10 @@
   <tr>
     <td></td> <td></td>
 -->
-    <td> &#10216;<tt>op</tt>&#10217; <i>id</i> <i>pat</i><sub>1</sub> ... <i>pat</i><sub><i>n</i></sub> &#10216;<tt>:</tt> <i>typ</i>&#10217; <tt>=</tt> <i>exp</i> &#10216;<tt>|</tt> <i>funmatch</i>&#10217; &nbsp;&nbsp;</td>
-    <td> nonfix (<i>n</i> &#8805; 1) </td>
-  </tr>
-  <tr>
-    <td></td> <td></td>
-    <td> <i>pat</i><sub>1</sub> <i>id</i> <i>pat</i><sub>2</sub>  &#10216;<tt>:</tt> <i>typ</i>&#10217; <tt>=</tt> <i>exp</i> &#10216;<tt>|</tt> <i>funmatch</i>&#10217; </td>
-    <td> infix </td>
-  </tr>
-  <tr>
-    <td></td> <td></td>
-    <td> <tt>(</tt> <i>pat</i><sub>1</sub> <i>id</i> <i>pat</i><sub>2</sub>  <tt>)</tt> <i>pat'</i><sub>1</sub> ... <i>pat'</i><sub><i>n</i></sub> &#10216;<tt>:</tt> <i>typ</i>&#10217; <tt>=</tt> <i>exp</i> &#10216;<tt>|</tt> <i>funmatch</i>&#10217; &nbsp;&nbsp; </td>
-    <td> infix (<i>n</i> &#8805; 0) </td>
+    <td> <i>id</i> <i>pat</i> <tt>=</tt> <i>exp</i> </td>
+    <td> nonfix </td>
   </tr>
 
-  <tr><td></td></tr>
-  <tr>
-    <td> <i>typbind</i> </td>
-    <td>::=</td>
-<!--
-  </tr>
-  <tr>
-    <td></td> <td></td>
--->
-    <td> &#10216;<i>var</i>&#10217;<sup>(,)</sup> <i>id</i> <tt>=</tt> <i>typ</i> &#10216;<tt>and</tt> <i>typbind</i>&#10217; </td>
-    <td> abbreviation </td>
-  </tr>
-
-  <tr><td></td></tr>
-  <tr>
-    <td> <i>datbind</i> </td>
-    <td>::=</td>
-<!--
-  </tr>
-  <tr>
-    <td></td> <td></td>
--->
-    <td> &#10216;<i>var</i>&#10217;<sup>(,)</sup> <i>id</i> <tt>=</tt> 
-           <i>conbind</i> &#10216;<tt>and</tt> <i>datbind</i>&#10217; &nbsp;&nbsp; </td>
-    <td> data type </td>
-  </tr>
-
-  <tr><td></td></tr>
-  <tr>
-    <td> <i>conbind</i> </td>
-    <td>::=</td>
-<!--
-  </tr>
-  <tr>
-    <td></td> <td></td>
--->
-    <td> <i>id</i> &#10216;<tt>of</tt> <i>typ</i>&#10217; &#10216;<tt>|</tt> <i>conbind</i>&#10217; &nbsp;&nbsp; </td>
-    <td> data constructor </td>
-  </tr>
-
-  <tr><td></td></tr>
-  <tr>
-    <td> <i>exnbind</i>&nbsp;&nbsp; </td>
-    <td>::=</td>
-<!--
-  </tr>
-  <tr>
-    <td></td> <td></td>
--->
-    <td> <i>id</i> &#10216;<tt>of</tt> <i>typ</i>&#10217; &#10216;<tt>and</tt> <i>exnbind</i>&#10217; </td>
-    <td> generative </td>
-  </tr>
-  <tr>
-    <td></td> <td></td>
-    <td> <i>id</i> <tt>=</tt> <i>longid</i> &#10216;<tt>and</tt> <i>exnbind</i>&#10217; </td>
-    <td> renaming </td>
-  </tr>
 </tbody></table>
 
 <p><sub>Note: Omitted <tt>op</tt> on constructors.</sub></p>
@@ -781,16 +511,6 @@
 -->
   <tr>
     <td></td> <td></td>
-    <td> <tt>functor</tt> <i>fctbind</i> </td>
-    <td> functor declaration </td>
-  </tr>
-  <tr>
-    <td></td> <td></td>
-    <td> <tt>signature</tt> <i>sigbind</i> </td>
-    <td> signature declaration </td>
-  </tr>
-  <tr>
-    <td></td> <td></td>
     <td> </td>
     <td> empty </td>
   </tr>
@@ -800,36 +520,6 @@
     <td> sequence </td>
   </tr>
 
-  <tr><td></td></tr>
-  <tr>
-    <td> <i>fctbind</i> </td>
-    <td>::=</td>
-<!--
-  </tr>
-  <tr>
-    <td></td> <td></td>
--->
-    <td> <i>id</i><sub>1</sub> <tt>(</tt> <i>id</i><sub>2</sub> <tt>:</tt> <i>sig</i> <tt>)</tt> &#10216;<tt>:</tt>&#10216;<tt>&gt;</tt>&#10217; <i>sig</i>&#10217; <tt>=</tt> <i>str</i> &#10216;<tt>and</tt> <i>fctbind</i>&#10217; &nbsp;&nbsp;</td>
-    <td> plain </td>
-  </tr>
-  <tr>
-    <td></td> <td></td>
-    <td> <i>id</i> <tt>(</tt> <i>spec</i> <tt>)</tt> &#10216;<tt>:</tt>&#10216;<tt>&gt;</tt>&#10217; <i>sig</i>&#10217; <tt>=</tt> <i>str</i> &#10216;<tt>and</tt> <i>fctbind</i>&#10217; </td>
-    <td> opened </td>
-  </tr>
-
-  <tr><td></td></tr>
-  <tr>
-    <td> <i>sigbind</i> &nbsp;&nbsp;</td>
-    <td>::=</td>
-<!--
-  </tr>
-  <tr>
-    <td></td> <td></td>
--->
-    <td> <i>id</i> <tt>=</tt> <i>sig</i> &#10216;<tt>and</tt> <i>sigbind</i>&#10217; </td>
-    <td> signature </td>
-  </tr>
 </tbody></table>
 
 <p><sub>Note: Omitted <i>exp</i><tt>;</tt> derived form for interactive toplevel.</sub></p>

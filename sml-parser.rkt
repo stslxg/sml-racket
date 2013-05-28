@@ -7,14 +7,16 @@
 (provide (all-defined-out))
 
 (define-tokens data (DATUM ID))
-(define-empty-tokens delim (fun SPACE COMMA OP CP LOP LCP DOT EOF))
+(define-empty-tokens delim (= VAL FUN SPACE SEMI-CO COMMA OP CP LOP LCP DOT EOF))
   
 (define sml-lexer
   (lexer
     [(:or sml-whitespace comment) (sml-lexer input-port)] 
     [(:: #\# #\" any-char #\") (token-DATUM (caddr (string->list lexeme)))]
     [#\" (token-DATUM (list->string (get-string-token input-port)))]
-    ;;["fun" 'FUN]
+    ["val" 'VAL]
+    ["fun" 'FUN]
+    [#\; 'SEMI-CO]
     [#\, 'COMMA]
     [#\( 'OP]
     [#\) 'CP]
@@ -57,7 +59,7 @@
   
 (define sml-parser
   (parser
-   (start start)
+   (start prog)
    (end EOF)
    (tokens data delim)
    (error (lambda (a b c) (void)))
@@ -66,15 +68,22 @@
    
    (grammar
     
-    (start [() #f]
-           [(error start) #f]
-           [(exp start) #f])
+    (prog [() '()]
+          [(error prog) $2]
+          [(dec SEMI-CO prog) (cons $1 $3)]
+          [(dec prog) (cons $1 $2)])
     
-    (exp [(DATUM) (print $1)]
-         [(ID) (print $1)]
-         ;;[(delim) (void)]
-         [(fun ID OP ID COMMA ID CP) (print (list "fun" $2 "(" $4 "," $6 ")"))]
-         ))))
+    (dec [(VAL valbind) `(valbind ,@$2)]
+         [(FUN funbind) `(funbind ,(first $2) ,(second $2) ,(third $2))]
+         [() '()]
+         [(dec dec) (cons $1 $2)]
+         [(dec SEMI-CO dec) (cons $1 $3)])
+    (valbind [(pat = exp) (list $1 $3)])
+    (funbind [(funmatch) $1])
+    (funmatch [(ID pat = exp) `(,$1 ,$2 ,$4)])
+    (pat [(con) $1]
+         [()
+    )))
 
 ;;for testing
 
