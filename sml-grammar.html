@@ -12,7 +12,7 @@
 
 <h1>Standard ML Grammar</h1>
 
-<p>This page describes the full grammar of the core and module language of <a href="http://mitpress.mit.edu/book-home.tcl?isbn=0262631814">Standard ML ('97 revision)</a>, including all "derived forms" from Appendix A of the language definition<!-- (a few minor omissions are noted in the respective sections below)-->.</p>
+<p>This page describes a subset of the full grammar of the core language of <a href="http://mitpress.mit.edu/book-home.tcl?isbn=0262631814">Standard ML ('97 revision)</a>.
  
 <p>See <a href="#notation">below</a> for explanation of the notation.</p>
 
@@ -169,6 +169,11 @@
   </tr>
   <tr>
     <td></td> <td></td>
+    <td> <i>id</i> </td>
+    <td> value identifier </td>
+  </tr>
+  <tr>
+    <td></td> <td></td>
     <td> <i>exp</i><sub>1</sub> <i>exp</i><sub>2</sub> </td>
     <td> application </td>
   </tr>
@@ -181,6 +186,12 @@
     <td></td> <td></td>
     <td> <tt>(</tt> <i>exp</i> <tt>)</tt> </td>
     <td> parentheses </td>
+  </tr>
+  <tr>
+    <td></td> <td></td>
+    <td> <tt>(</tt> <i>exp</i><sub>1</sub> <tt>,</tt> ... <tt>,</tt>
+                    <i>exp</i><sub><i>n</i></sub> <tt>)</tt> </td>
+    <td> tuple (<i>n</i> &ne; 1) </td>
   </tr>
   <tr>
     <td></td> <td></td>
@@ -218,8 +229,6 @@
          <tt>else</tt> <i>exp</i><sub>3</sub> </td>
     <td> conditional </td>
   </tr>
-
-  
 </tbody></table>
 
 

@@ -6,8 +6,8 @@
 
 (provide (all-defined-out))
 
-(define-tokens data (DATUM ID))
-(define-empty-tokens delim (= VAL FUN SPACE SEMI-CO COMMA OP CP LOP LCP DOT EOF))
+(define-tokens data (DATUM AID SID))
+(define-empty-tokens delim (VAL FUN SPACE SEMI-CO COMMA OP CP LOP LCP DOT EOF ASSIGNOP))
   
 (define sml-lexer
   (lexer
@@ -16,13 +16,15 @@
     [#\" (token-DATUM (list->string (get-string-token input-port)))]
     ["val" 'VAL]
     ["fun" 'FUN]
+    [#\= 'ASSIGNOP]
     [#\; 'SEMI-CO]
     [#\, 'COMMA]
     [#\( 'OP]
     [#\) 'CP]
     [#\[ 'LOP]
     [#\] 'LCP]
-    [identifier (token-ID lexeme)]
+    [alphanumeric-id (token-AID lexeme)]
+    [symbolic-id (token-SID lexeme)]
     [int10 (token-DATUM (string->number 
                          (string-replace lexeme "~" "-") 10))]
     [float10 (token-DATUM (string->number 
@@ -53,18 +55,24 @@
   [sign (:or "" "~")]
   [identifier (:or alphanumeric-id symbolic-id)]
   [alphanumeric-id (:: letter (:* (:or letter digit #\' #\_)))]
-  [symbolic-id (:+ (:or #\! #\% #\& #\$ #\+ #\- #\/ #\:
+  [symbolic-id (:- (:+ (:or #\! #\% #\& #\$ #\+ #\- #\/ #\:
                         #\< #\> #\= #\? #\@ #\\ #\~ #\`
-                        #\^ #\| #\*))])
+                        #\^ #\| #\*)) #\=)])
   
 (define sml-parser
   (parser
    (start prog)
    (end EOF)
    (tokens data delim)
-   (error (lambda (a b c) (void)))
-
-   (precs (right OP))
+   (error (lambda (tok-ok? tok-name tok-value) (print tok-name)(print tok-value)))
+   (debug "yacc.log")
+   
+   (precs (nonassoc VAL)
+          (nonassoc FUN)
+          (left SID)
+          (left COMMA)
+          (nonassoc ASSIGNOP)
+          (left SEMI-CO))
    
    (grammar
     
@@ -72,26 +80,34 @@
           [(error prog) $2]
           [(dec SEMI-CO prog) (cons $1 $3)]
           [(dec prog) (cons $1 $2)]
-          [(exp) $1])
-    
-    (dec [(VAL valbind) `(valbind ,@$2)]
-         [(FUN funbind) `(funbind ,(first $2) ,(second $2) ,(third $2))]
-         [() '()]
-         [(dec dec) (cons $1 $2)]
-         [(dec SEMI-CO dec) (cons $1 $3)])
-    (valbind [(pat = exp) (list $1 $3)])
+          [(exp SEMI-CO prog) (cons $1 $3)])  
+    (dec [(VAL valbind) `(valbind ,(first $2) ,(second $2))]
+         [(FUN funbind) `(funbind ,(first $2) ,(second $2) ,(third $2))])
+    (valbind [(pat ASSIGNOP exp) (list $1 $3)])
     (funbind [(funmatch) $1])
-    (funmatch [(ID pat = exp) (list $1 $2 $4)])
+    (funmatch [(AID pat ASSIGNOP exp) (list $1 $2 $4)])
     (pat [(DATUM) $1]
-         [(ID) $1]
+         [(AID) $1]
          [(OP pat CP) (list $2)]
-         [(OP pat pat-tuple) (cons $2 $3)]
-         [(LOP pat pat-list) (cons $2 $3)])
-    (pat-tuple [(COMMA pat CP) (list $2)]
-               [(COMMA pat pat-tuple) (cons $2 $3)])
-    (pat-list [(COMMA pat LCP) (list $2)]
-              [(COMMA pat pat-list) (cons $2 $3)])
-    (exp [() '()])
+         [(pat-tuple pat CP) `(tuple ,(reverse (cons $2 $1)))]
+         [(pat-list pat LCP) (reverse (cons $2 $1))]
+         [(LOP LCP) '()])
+    (pat-tuple [(OP pat COMMA) (list $2)]
+               [(pat-tuple pat COMMA) (cons $2 $1)])
+    (pat-list [(LOP) '()]
+              [(pat-list pat COMMA) (cons $2 $1)])
+    (exp [(DATUM) $1]
+         [(AID) $1]
+         [(exp exp) `(app ,$1 ,$2)]
+         [(exp SID exp) `(app ,$2 ,$1 ,$3)]
+         [(OP exp CP) $2]
+         [(exp-tuple exp CP) `(tuple ,(reverse (cons $2 $1)))]
+         [(exp-list exp LCP) (reverse (cons $2 $1))]
+         [(LOP LCP) '()])
+    (exp-tuple [(OP exp COMMA) (list $2)]
+               [(exp-tuple exp COMMA) (cons $2 $1)])
+    (exp-list [(LOP) '()]
+              [(exp-list exp COMMA) (cons $2 $1)])
     )))
 
 ;;for testing
@@ -100,4 +116,4 @@
   (port-count-lines! input-port)
   (sml-parser (lambda () (sml-lexer input-port))))
 
-(display (sml-parser-test (open-input-file "test.sml" #:mode 'text)))
+(display (sml-parser-test (open-input-file "test-val.sml" #:mode 'text)))
