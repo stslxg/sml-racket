@@ -80,9 +80,13 @@
          [(dec SEMI-CO dec) (cons $1 $3)])
     (valbind [(pat = exp) (list $1 $3)])
     (funbind [(funmatch) $1])
-    (funmatch [(ID pat = exp) `(,$1 ,$2 ,$4)])
-    (pat [(con) $1]
-         [()
+    (funmatch [(ID pat = exp) (list $1 $2 $4)])
+    (pat [(DATUM) $1]
+         [(ID) $1]
+         [(OP pat CP) (list $2)]
+         [(OP pat pat-tuple) (cons $2 $3)]
+         [(LOP pat pat-list) (cons $2 $3)])
+    (pat-tuple [(COMMA 
     )))
 
 ;;for testing

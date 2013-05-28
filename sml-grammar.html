@@ -325,23 +325,8 @@
   </tr>
   <tr>
     <td></td> <td></td>
-    <td> <tt>_</tt> </td>
-    <td> wildcard </td>
-  </tr>
-  <tr>
-    <td></td> <td></td>
-    <td> &#10216;<tt>op</tt>&#10217; <i>id</i> </td>
+    <td> <i>id</i> </td>
     <td> variable </td>
-  </tr>
-  <tr>
-    <td></td> <td></td>
-    <td> &#10216;<tt>op</tt>&#10217; <i>longid</i> &#10216;<i>pat</i>&#10217; </td>
-    <td> construction </td>
-  </tr>
-  <tr>
-    <td></td> <td></td>
-    <td> <i>pat</i><sub>1</sub> <i>id</i> <i>pat</i><sub>2</sub> </td>
-    <td> infix construction </td>
   </tr>
   <tr>
     <td></td> <td></td>
@@ -356,56 +341,11 @@
   </tr>
   <tr>
     <td></td> <td></td>
-    <td> <tt>{</tt> &#10216;<i>patrow</i>&#10217; <tt>}</tt> &nbsp;&nbsp; </td>
-    <td> record </td>
-<!--
-    <td> <tt>{</tt> <i>lab</i><sub>1</sub> &lang;<tt>=</tt> <i>pat</i><sub>1</sub>&rang; <tt>,</tt> ... <tt>,</tt>
-                    <i>lab</i><sub><i>n</i></sub> &lang;<tt>=</tt> <i>pat</i><sub><i>n</i></sub>&rang; 
-                    &lang;<tt>,</tt> <tt>...</tt>&rang; <tt>}</tt> &nbsp;&nbsp; </td>
-    <td> record (<i>n</i> &ge; 0) </td>
--->
-  </tr>
-  <tr>
-    <td></td> <td></td>
     <td> <tt>[</tt> <i>pat</i><sub>1</sub> <tt>,</tt> ... <tt>,</tt>
                     <i>pat</i><sub><i>n</i></sub> <tt>]</tt> </td>
     <td> list (<i>n</i> &#8805; 0) </td>
   </tr>
-  <tr>
-    <td></td> <td></td>
-    <td> <i>pat</i> <tt>:</tt> <i>typ</i> </td>
-    <td> type annotation </td>
-  </tr>
-  <tr>
-    <td></td> <td></td>
-    <td> &#10216;<tt>op</tt>&#10217; <i>id</i> &#10216;<tt>:</tt> <i>typ</i>&#10217;
-         <tt>as</tt> <i>pat</i> </td>
-    <td> layered </td>
-  </tr>
 
-  <tr><td></td></tr>
-  <tr>
-    <td> <i>patrow</i> &nbsp;&nbsp;</td>
-    <td>::=</td>
-<!--
-  </tr>
-  <tr>
-    <td></td> <td></td>
--->
-    <td> <tt>...</tt> </td>
-    <td> wildcard </td>
-  </tr>
-  <tr>
-    <td></td> <td></td>
-    <td> <i>lab</i> <tt>=</tt> <i>pat</i> &#10216;<tt>,</tt> <i>patrow</i>&#10217; </td>
-    <td> pattern </td>
-  </tr>
-  <tr>
-    <td></td> <td></td>
-    <td> <i>id</i> &#10216;<tt>:</tt> <i>typ</i>&#10217;
-         &#10216;<tt>as</tt> <i>pat</i>&#10217; &#10216;<tt>,</tt> <i>patrow</i>&#10217; &nbsp;&nbsp;</td>
-    <td> variable </td>
-  </tr>
 </tbody></table>
 
 <!--
