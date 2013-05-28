@@ -10,13 +10,6 @@ fun number_in_months(  x,  y) =
     then 0
     else number_in_month(x, hd y) + number_in_months(x, tl y)
 
-fun dates_in_month(ls, y) = 
-    if null ls
-    then []
-    else if hd ls = y
-    then append(hd ls, dates_in_month(tl ls, y))
-    else dates_in_month(tl ls, y)
-
 fun get_nth(ls, n ) = 
     if n = 1
     then hd ls
@@ -28,14 +21,14 @@ fun date_to_string(date) =
     end
 
 fun number_before_reaching_sum( sum , x ) =
-    let fun tmp(xx: int list,  s: int) = 
-	    if s <= hd xx
+    let fun tmp(xx,  s) = 
+	    if s <= (hd xx)
 	    then 0
 	    else tmp(tl xx, s - (hd xx)) + 1
     in tmp(x, sum)
     end
 
-fun what_month(day : int) = 
+fun what_month(day) = 
     let val days_in_months = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31] 
     in number_before_reaching_sum(day, days_in_months) + 1
     end
@@ -55,7 +48,7 @@ fun remove_duplicate(l    ) =
 	     fun in_list ( x  , ll  ) = 
 		 if null ll
 		 then false
-		 else if x = hd ll
+		 else if x = (hd ll)
 		 then true
 		 else in_list(x, tl ll)
 	 in if in_list(hd l, tl_ans)
@@ -68,3 +61,6 @@ fun number_in_months_challenge(x, y ) =
 
 fun dates_in_months_challenge(x, y) =
     dates_in_months(x, remove_duplicate(y))
+
+
+

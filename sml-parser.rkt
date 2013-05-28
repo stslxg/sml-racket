@@ -7,7 +7,7 @@
 (provide (all-defined-out))
 
 (define-tokens data (DATUM AID SID))
-(define-empty-tokens delim (VAL FUN SPACE SEMI-CO COMMA OP CP LOP LCP DOT EOF ASSIGNOP))
+(define-empty-tokens delim (IF THEN ELSE ANDALSO ORELSE LET IN END VAL FUN SPACE SEMI-CO COMMA OP CP LOP LCP DOT EOF ASSIGNOP))
   
 (define sml-lexer
   (lexer
@@ -16,6 +16,14 @@
     [#\" (token-DATUM (list->string (get-string-token input-port)))]
     ["val" 'VAL]
     ["fun" 'FUN]
+    ["let" 'LET]
+    ["in" 'IN]
+    ["end" 'END]
+    ["andalso" 'ANDALSO]
+    ["orelse" 'ORELSE]
+    ["if" 'IF]
+    ["then" 'THEN]
+    ["else" 'ELSE]
     [#\= 'ASSIGNOP]
     [#\; 'SEMI-CO]
     [#\, 'COMMA]
@@ -47,7 +55,7 @@
   [letter (:or (:/ "a" "z") (:/ #\A #\Z))]
   [digit (:/ #\0 #\9)]
   [sml-whitespace (:or #\newline #\return #\tab #\space #\vtab)]
-  [comment (:: #\( #\* (:* (:~ #\* #\))) #\* #\))]
+  [comment (:: "(*" (complement (:: any-string "*)" any-string)) "*)")]
   [num10 (:+ digit)]
   [int10 (:: sign num10)]
   [float10 (:or (:: sign num10 #\. num10)
@@ -67,11 +75,14 @@
    (error (lambda (tok-ok? tok-name tok-value) (print tok-name)(print tok-value)))
    (debug "yacc.log")
    
-   (precs (nonassoc VAL)
-          (nonassoc FUN)
-          (left SID)
+   (precs (left SID)
+          (left AID)
+          (left ANDALSO)
+          (left ORELSE)
           (left COMMA)
-          (nonassoc ASSIGNOP)
+          (left ASSIGNOP)
+          (nonassoc VAL)
+          (nonassoc FUN)
           (left SEMI-CO))
    
    (grammar
@@ -83,6 +94,9 @@
           [(exp SEMI-CO prog) (cons $1 $3)])  
     (dec [(VAL valbind) `(valbind ,(first $2) ,(second $2))]
          [(FUN funbind) `(funbind ,(first $2) ,(second $2) ,(third $2))])
+    (let-dec [() '()]
+             [(dec SEMI-CO let-dec) (cons $1 $3)]
+             [(dec let-dec) (cons $1 $2)])
     (valbind [(pat ASSIGNOP exp) (list $1 $3)])
     (funbind [(funmatch) $1])
     (funmatch [(AID pat ASSIGNOP exp) (list $1 $2 $4)])
@@ -100,14 +114,24 @@
          [(AID) $1]
          [(exp exp) `(app ,$1 ,$2)]
          [(exp SID exp) `(app ,$2 ,$1 ,$3)]
+         [(exp ASSIGNOP exp) `(app ,"=" ,$1 ,$3)]
          [(OP exp CP) $2]
          [(exp-tuple exp CP) `(tuple ,(reverse (cons $2 $1)))]
          [(exp-list exp LCP) (reverse (cons $2 $1))]
-         [(LOP LCP) '()])
+         [(LOP LCP) '()]
+         [(exp-seq exp CP) `(seq ,(reverse (cons $2 $1)))]
+         [(LET let-dec IN exp-let END) `(let ,$2 ,(reverse $4))]
+         [(exp ANDALSO exp) `(and ,$1 ,$3)]
+         [(exp ORELSE exp) `(or ,$1 ,$3)]
+         [(IF exp THEN exp ELSE exp) `(if ,$2 ,$4 ,$6)])
     (exp-tuple [(OP exp COMMA) (list $2)]
                [(exp-tuple exp COMMA) (cons $2 $1)])
     (exp-list [(LOP) '()]
               [(exp-list exp COMMA) (cons $2 $1)])
+    (exp-seq [(OP exp SEMI-CO) (list $2)]
+             [(exp-seq exp SEMI-CO) (cons $2 $1)])
+    (exp-let [(exp) (list $1)]
+             [(exp-let SEMI-CO exp) (cons $3 $1)])
     )))
 
 ;;for testing
@@ -116,4 +140,4 @@
   (port-count-lines! input-port)
   (sml-parser (lambda () (sml-lexer input-port))))
 
-(display (sml-parser-test (open-input-file "test-val.sml" #:mode 'text)))
+(display (sml-parser-test (open-input-file "test.sml" #:mode 'text)))
