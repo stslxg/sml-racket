@@ -7,15 +7,15 @@
 (provide (all-defined-out))
 
 (define-tokens data (DATUM ID))
-(define-empty-tokens delim (OP CP LOP LCP DOT EOF))
+(define-empty-tokens delim (fun SPACE COMMA OP CP LOP LCP DOT EOF))
   
 (define sml-lexer
   (lexer
-    [(:or sml-whitespace comment) (token-DATUM #\space)] 
+    [(:or sml-whitespace comment) (sml-lexer input-port)] 
     [(:: #\# #\" any-char #\") (token-DATUM (caddr (string->list lexeme)))]
-    ["#\\space" (token-DATUM #\space)]
-    ["#\\newline" (token-DATUM #\newline)]
     [#\" (token-DATUM (list->string (get-string-token input-port)))]
+    ;;["fun" 'FUN]
+    [#\, 'COMMA]
     [#\( 'OP]
     [#\) 'CP]
     [#\[ 'LOP]
@@ -58,33 +58,28 @@
 (define sml-parser
   (parser
    (start start)
-   (end newline EOF)
-   (tokens value-tokens op-tokens)
+   (end EOF)
+   (tokens data delim)
    (error (lambda (a b c) (void)))
 
-   (precs (right =)
-          (left - +)
-          (left * /)
-          (left NEG)
-          (right ^))
+   (precs (right OP))
    
    (grammar
     
     (start [() #f]
-           ;; If there is an error, ignore everything before the error
-           ;; and try to start over right after the error
-           [(error start) $2]
-           [(exp) $1])
+           [(error start) #f]
+           [(exp start) #f])
     
-    (exp [(NUM) $1]
-         [(VAR) (hash-ref vars $1 (lambda () 0))]
-         [(VAR = exp) (begin (hash-set! vars $1 $3)
-                             $3)]
-         [(FNCT OP exp CP) ($1 $3)]
-         [(exp + exp) (+ $1 $3)]
-         [(exp - exp) (- $1 $3)]
-         [(exp * exp) (* $1 $3)]
-         [(exp / exp) (/ $1 $3)]
-         [(- exp) (prec NEG) (- $2)]
-         [(exp ^ exp) (expt $1 $3)]
-         [(OP exp CP) $2]))))
+    (exp [(DATUM) (print $1)]
+         [(ID) (print $1)]
+         ;;[(delim) (void)]
+         [(fun ID OP ID COMMA ID CP) (print (list "fun" $2 "(" $4 "," $6 ")"))]
+         ))))
+
+;;for testing
+
+(define (sml-parser-test input-port)
+  (port-count-lines! input-port)
+  (sml-parser (lambda () (sml-lexer input-port))))
+
+(display (sml-parser-test (open-input-file "test.sml" #:mode 'text)))
