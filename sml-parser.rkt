@@ -6,7 +6,7 @@
 
 (provide (all-defined-out))
 
-(define-tokens data (DATUM AID SID))
+(define-tokens data (LAB DATUM AID SID))
 (define-empty-tokens delim (IF THEN ELSE ANDALSO ORELSE LET IN END VAL FUN SPACE SEMI-CO COMMA OP CP LOP LCP DOT EOF ASSIGNOP))
   
 (define sml-lexer
@@ -31,6 +31,7 @@
     [#\) 'CP]
     [#\[ 'LOP]
     [#\] 'LCP]
+    [lab (token-LAB (string->number (string-replace lexeme "#" "")))]
     [alphanumeric-id (token-AID lexeme)]
     [symbolic-id (token-SID lexeme)]
     [int10 (token-DATUM (string->number 
@@ -62,7 +63,9 @@
                 (:: sign num10 (:or "" (:: #\. num10)) "e" sign num10))]
   [sign (:or "" "~")]
   [identifier (:or alphanumeric-id symbolic-id)]
-  [alphanumeric-id (:: letter (:* (:or letter digit #\' #\_)))]
+  [lab (:: #\# num10)]
+  [alphanumeric-id (:: a-id (:* (:: #\. a-id)))]
+  [a-id (:: letter (:* (:or letter digit #\' #\_)))]
   [symbolic-id (:- (:+ (:or #\! #\% #\& #\$ #\+ #\- #\/ #\:
                         #\< #\> #\= #\? #\@ #\\ #\~ #\`
                         #\^ #\| #\*)) #\=)])
@@ -75,12 +78,13 @@
    (error (lambda (tok-ok? tok-name tok-value) (print tok-name)(print tok-value)))
    (debug "yacc.log")
    (suppress)
-   (precs (left SID)
-          (left AID)
+   (precs (left LAB)
           (left ANDALSO)
           (left ORELSE)
-          (left COMMA)
           (left ASSIGNOP)
+          (left SID)
+          (left AID)
+          (left COMMA)
           (nonassoc VAL)
           (nonassoc FUN)
           (left SEMI-CO))
@@ -109,6 +113,7 @@
     (exp [(DATUM) `(datum ,$1)]
          [(AID) `(id ,$1)]
          [(exp exp) (prec SID) `(app ,$1 ,$2)]
+         [(LAB) `(lab ,$1)]
          [(exp SID exp) `(app (id ,$2) ,$1 ,$3)]
          [(exp ASSIGNOP exp) `(app (id ,"=") ,$1 ,$3)]
          [(OP exp CP) $2]

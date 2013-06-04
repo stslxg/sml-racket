@@ -149,7 +149,24 @@
     <td> &#10216;<tt>!</tt> | <tt>%</tt> | <tt>&amp;</tt> | <tt>$</tt> | <tt>#</tt> | <tt>+</tt> | <tt>-</tt> | <tt>/</tt> | <tt>:</tt> | <tt>&lt;</tt> | <tt>=</tt> | <tt>&gt;</tt> | <tt>?</tt> | <tt>@</tt> | <tt>\</tt> | <tt>~</tt> | <tt>`</tt> | <tt>^</tt> | <tt>|</tt> | <tt>*</tt>&#10217;<sup>+</sup> &nbsp;&nbsp;</td>
     <td> symbolic (not allowed for type variables or module language identifiers) </td>
   </tr>
+  <tr>
+    <td> <i>longid</i> &nbsp;&nbsp; </td>
+    <td>::=</td>
+<!--
+  </tr>
+  <tr>
+    <td></td> <td></td>
+-->
+    <td> <i>id</i><sub>1</sub><tt>.</tt>&middot;&middot;&middot;<tt>.</tt><i>id</i><sub><i>n</i></sub> </td>
+    <td> qualified (<i>n</i> &ge; 1) </td>
+  </tr>
+ <tr>
+    <td> <i>lab</i> </td>
+    <td>::=</td>
 
+    <td> <i>num</i> </td>
+    <td> number (may not start with <tt>0</tt>) </td>
+  </tr>
 </tbody></table>
 
 
@@ -192,6 +209,11 @@
     <td> <tt>(</tt> <i>exp</i><sub>1</sub> <tt>,</tt> ... <tt>,</tt>
                     <i>exp</i><sub><i>n</i></sub> <tt>)</tt> </td>
     <td> tuple (<i>n</i> &ne; 1) </td>
+  </tr>
+  <tr>
+    <td></td> <td></td>
+    <td> <tt>#</tt> <i>lab</i> </td>
+    <td> record selector </td>
   </tr>
   <tr>
     <td></td> <td></td>
