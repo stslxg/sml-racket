@@ -7,12 +7,12 @@
     ["false" "#f"]
     ["null" "null?"]
     ["::" "cons"]
+    ["^" "string-append"]
+    ["@" "append"]
     ["hd" "car"]
     ["tl" "cdr"]
     ["Int.toString" "number->string"]
     ["String.toInt" "string->number"]
-    ["^" "string-append"]
-    ["@" "append"]
     ["mod" "remainder"]
     ["div" "quotient"]
     ["<>" "(compose not =)"]
@@ -33,6 +33,9 @@
     [`(lab ,num) (trans-lab num)]
     [`(valbind ,val ,body)
      (format "(define ~a ~a)" (racket-translator val) (racket-translator body))]
+    [`(funbind-mutual (,i ...))
+     (apply string-append (for/list ([j i])
+                            (racket-translator j)))]
     [`(funbind ,val (pat-tuple (,i ...)) ,body)
      (format "(define (~a ~a)\n ~a)" (racket-translator val)
              (apply string-append (for/list ([j i])
@@ -83,6 +86,9 @@
                                     (string-append (racket-translator j) "\n"))))]
     [`(valbind ,val ,body)
      (format "[~a ~a]" (racket-translator val) (racket-translator-inner body))]
+    [`(funbind-mutual (,i ...))
+     (apply string-append (for/list ([j i])
+                            (racket-translator-inner j)))]
     [`(funbind ,val (pat-tuple (,i ...)) ,body)
      (format "[~a (lambda (~a) ~a)]" 
              (racket-translator val)

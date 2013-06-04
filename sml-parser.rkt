@@ -7,13 +7,14 @@
 (provide (all-defined-out))
 
 (define-tokens data (LAB DATUM AID SID))
-(define-empty-tokens delim (IF THEN ELSE ANDALSO ORELSE LET IN END VAL FUN SPACE SEMI-CO COMMA OP CP LOP LCP DOT EOF ASSIGNOP))
+(define-empty-tokens delim (AND IF THEN ELSE ANDALSO ORELSE LET IN END VAL FUN SPACE SEMI-CO COMMA OP CP LOP LCP DOT EOF ASSIGNOP))
   
 (define sml-lexer
   (lexer
     [(:or sml-whitespace comment) (sml-lexer input-port)] 
     [(:: #\# #\" any-char #\") (token-DATUM (caddr (string->list lexeme)))]
     [#\" (token-DATUM (list->string (get-string-token input-port)))]
+    ["and" 'AND]
     ["val" 'VAL]
     ["fun" 'FUN]
     ["let" 'LET]
@@ -87,6 +88,7 @@
           (left COMMA)
           (nonassoc VAL)
           (nonassoc FUN)
+          (left AND)
           (left SEMI-CO))
    
    (grammar
@@ -97,12 +99,13 @@
           [(dec prog) (cons $1 $2)]
           [(exp SEMI-CO prog) (cons $1 $3)])  
     (dec [(VAL valbind) `(valbind ,(first $2) ,(second $2))]
-         [(FUN funbind) `(funbind ,(first $2) ,(second $2) ,(third $2))])
+         [(FUN funbind) `(funbind-mutual ,$2)])
     (let-dec [() '()]
              [(dec SEMI-CO let-dec) (cons $1 $3)]
              [(dec let-dec) (cons $1 $2)])
     (valbind [(pat ASSIGNOP exp) (list $1 $3)])
-    (funbind [(funmatch) $1])
+    (funbind [(funmatch) `(funbind ,(first $1) ,(second $1) ,(third $1))]
+             [(funmatch AND funbind) (cons `(funbind ,(first $1) ,(second $1) ,(third $1)) $3)])
     (funmatch [(AID pat ASSIGNOP exp) (list `(id ,$1) $2 $4)])
     (pat [(DATUM) `(datum ,$1)]
          [(AID) `(id ,$1)]
