@@ -11,4 +11,5 @@
   
 ;;for testing
 
-(display (sml->racket (open-input-file "test.sml" #:mode 'text)))
+;;(display (sml->racket (open-input-file "test.sml" #:mode 'text)))
+(display (sml->racket (current-input-port)))
