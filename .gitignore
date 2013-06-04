@@ -3,3 +3,6 @@ compiled/
 *~
 yacc.log
 *.zip
+*.tm
+*.pdf
+output.rkt
