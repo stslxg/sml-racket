@@ -97,7 +97,7 @@ fun reasonable_date(y) =
     let val x = hd y
 	fun max_days_in_month(year, month) = 
 	    let fun leap(x ) = 
-		    x % 400 = 0 orelse (x % 4 = 0 andalso x % 100 <> 0)
+		    x mod 400 = 0 orelse (x mod 4 = 0 andalso x mod 100 <> 0)
 		fun get_nth(ls , n ) = 
 		    if n = 1
 		    then hd ls
@@ -134,7 +134,6 @@ print g;
 val h = reasonable_date([(2013, 1, 12)]);
 val i = reasonable_date([(2013, 2, 30)]);
 val j = reasonable_date([(2000, 2, 29)]);
-
 print h;
 print i;
 print j;

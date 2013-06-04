@@ -13,7 +13,8 @@
     ["String.toInt" "string->number"]
     ["^" "string-append"]
     ["@" "append"]
-    ["%" "remainder"]
+    ["mod" "remainder"]
+    ["div" "quotient"]
     ["<>" "(compose not =)"]
     [_ id]))
 

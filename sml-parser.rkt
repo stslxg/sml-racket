@@ -32,8 +32,8 @@
     [#\[ 'LOP]
     [#\] 'LCP]
     [lab (token-LAB (string->number (string-replace lexeme "#" "")))]
-    [alphanumeric-id (token-AID lexeme)]
     [symbolic-id (token-SID lexeme)]
+    [alphanumeric-id (token-AID lexeme)]
     [int10 (token-DATUM (string->number 
                          (string-replace lexeme "~" "-") 10))]
     [float10 (token-DATUM (string->number 
@@ -66,9 +66,9 @@
   [lab (:: #\# num10)]
   [alphanumeric-id (:: a-id (:* (:: #\. a-id)))]
   [a-id (:: letter (:* (:or letter digit #\' #\_)))]
-  [symbolic-id (:- (:+ (:or #\! #\% #\& #\$ #\+ #\- #\/ #\:
-                        #\< #\> #\= #\? #\@ #\\ #\~ #\`
-                        #\^ #\| #\*)) #\=)])
+  [symbolic-id (:or "mod" "div" (:- (:+ (:or #\! #\% #\& #\$ #\+ #\- #\/ #\:
+                                             #\< #\> #\= #\? #\@ #\\ #\~ #\`
+                                             #\^ #\| #\*)) #\=))])
   
 (define sml-parser
   (parser
