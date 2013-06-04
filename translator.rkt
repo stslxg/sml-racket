@@ -5,17 +5,39 @@
   (match id
     ["true" "#t"]
     ["false" "#f"]
-    ["null" "null?"]
+    
+    ;; For List
+    [(or "List.null" "null") "null?"]
     ["::" "cons"]
-    ["^" "string-append"]
     ["@" "append"]
     ["hd" "car"]
     ["tl" "cdr"]
+    ["List.length" "length"]
+    ["List.last" "last"]
+    ["List.take" "take"]
+    ["List.drop" "drop"]
+    [(or "List.nth" "nth") "list-ref"]
+    [(or "List.rev" "rev") "reverse"]
+    [(or "List.concat" "concat") "flatten"]
+    ["List.map" "map"]
+    ["List.filter" "filter"]
+    ["List.foldl" "foldl"]
+    ["List.foldr" "foldr"]
+    [(or "List.all" "all") "andmap"]
+    [(or "List.exists" "exists") "ormap"]
+    [(or "List.find" "find") "findf"]
+    
+    ; For String 
+    
+    ["^" "string-append"]
     ["Int.toString" "number->string"]
     ["String.toInt" "string->number"]
+    
+    ; Misc
     ["mod" "remainder"]
     ["div" "quotient"]
     ["<>" "(compose not =)"]
+    ["print" "display"]
     [_ id]))
 
 (define (trans-lab num)
@@ -72,6 +94,12 @@
      (format "(or ~a ~a)" (racket-translator-inner exp1) (racket-translator-inner exp2))]
     [`(if ,clause ,then ,else)
      (format "(if ~a\n ~a\n ~a)" (racket-translator-inner clause) (racket-translator-inner then) (racket-translator-inner else))]
+    [`(lambda (pat-tuple (,i ...)) ,body)
+     (format "(lambda (~a) ~a)\n" (apply string-append (for/list ([j i])
+                                                         (string-append (racket-translator j) " ")))
+             (racket-translator body))]
+    [`(lambda ,id ,body)
+     (format "(lambda (~a) ~a)\n" (racket-translator id) (racket-translator body))]
     [(list i ...)
       (apply string-append (for/list ([i source])
                              (string-append (racket-translator i) "\n")))]

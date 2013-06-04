@@ -137,3 +137,6 @@ val j = reasonable_date([(2000, 2, 29)]);
 print h;
 print i;
 print j;
+
+val k = fn x => x + 1;
+print (k 5);

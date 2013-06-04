@@ -7,13 +7,16 @@
 (provide (all-defined-out))
 
 (define-tokens data (LAB DATUM AID SID))
-(define-empty-tokens delim (AND IF THEN ELSE ANDALSO ORELSE LET IN END VAL FUN SPACE SEMI-CO COMMA OP CP LOP LCP DOT EOF ASSIGNOP))
+(define-empty-tokens delim (LAMBDA-FN LAMBDA-ARROW AND IF THEN ELSE ANDALSO ORELSE LET IN END 
+                                      VAL FUN SPACE SEMI-CO COMMA OP CP LOP LCP DOT EOF ASSIGNOP))
   
 (define sml-lexer
   (lexer
     [(:or sml-whitespace comment) (sml-lexer input-port)] 
     [(:: #\# #\" any-char #\") (token-DATUM (caddr (string->list lexeme)))]
     [#\" (token-DATUM (list->string (get-string-token input-port)))]
+    ["fn" 'LAMBDA-FN]
+    ["=>" 'LAMBDA-ARROW]
     ["and" 'AND]
     ["val" 'VAL]
     ["fun" 'FUN]
@@ -79,17 +82,19 @@
    (error (lambda (tok-ok? tok-name tok-value) (print tok-name)(print tok-value)))
    (debug "yacc.log")
    (suppress)
-   (precs (left LAB)
-          (left ANDALSO)
-          (left ORELSE)
-          (left ASSIGNOP)
-          (left SID)
-          (left AID)
+   (precs (left SEMI-CO)
           (left COMMA)
           (nonassoc VAL)
           (nonassoc FUN)
           (left AND)
-          (left SEMI-CO))
+          (left LAMBDA-ARROW)
+          (left LAMBDA-FN)
+          (left ORELSE)
+          (left ANDALSO)
+          (left LAB)          
+          (left ASSIGNOP)
+          (left SID)
+          (left AID))
    
    (grammar
     
@@ -127,7 +132,8 @@
          [(LET let-dec IN exp-let END) `(let ,$2 ,(reverse $4))]
          [(exp ANDALSO exp) `(and ,$1 ,$3)]
          [(exp ORELSE exp) `(or ,$1 ,$3)]
-         [(IF exp THEN exp ELSE exp) `(if ,$2 ,$4 ,$6)])
+         [(IF exp THEN exp ELSE exp) `(if ,$2 ,$4 ,$6)]
+         [(LAMBDA-FN pat LAMBDA-ARROW exp) `(lambda ,$2 ,$4)])
     (exp-tuple [(OP exp COMMA) (list $2)]
                [(exp-tuple exp COMMA) (cons $2 $1)])
     (exp-list [(LOP) '()]
