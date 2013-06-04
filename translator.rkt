@@ -28,7 +28,12 @@
     [(or "List.find" "find") "findf"]
     
     ; For String 
-    
+    ["String.size" "string-length"]
+    ["String.sub" "string-ref"]
+    ["String.substring" "substring"]
+    ["String.concat" "string-append*"]
+    [(or "String.implode" "implode") "list->string"]
+    [(or "String.explode" "explode") "string->list"]
     ["^" "string-append"]
     ["Int.toString" "number->string"]
     ["String.toInt" "string->number"]
