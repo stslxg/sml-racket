@@ -104,7 +104,7 @@
              [(dec SEMI-CO let-dec) (cons $1 $3)]
              [(dec let-dec) (cons $1 $2)])
     (valbind [(pat ASSIGNOP exp) (list $1 $3)])
-    (funbind [(funmatch) `(funbind ,(first $1) ,(second $1) ,(third $1))]
+    (funbind [(funmatch) `((funbind ,(first $1) ,(second $1) ,(third $1)))]
              [(funmatch AND funbind) (cons `(funbind ,(first $1) ,(second $1) ,(third $1)) $3)])
     (funmatch [(AID pat ASSIGNOP exp) (list `(id ,$1) $2 $4)])
     (pat [(DATUM) `(datum ,$1)]
