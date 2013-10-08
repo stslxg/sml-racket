@@ -7,7 +7,7 @@
  
 (define (sml->racket input-port)
   (port-count-lines! input-port)
-  (string-append "#lang racket\n" (racket-translator (sml-parser (lambda () (sml-lexer input-port))))))
+  (string-append "#lang racket\n" (racket-translator (sml-parser (lambda () (sml-lexer input-port))) `())))
   
 ;;for testing
 
